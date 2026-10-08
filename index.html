@@ -1,0 +1,553 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#004b2c" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <link rel="icon" href="images/app-icon.png" />
+    <link rel="apple-touch-icon" href="images/app-icon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&amp;family=Noto+Serif+TC:wght@600;700&amp;display=swap"
+      rel="stylesheet"
+    />
+    <meta
+      name="description"
+      content="Cài đặt Cathay Meeting trên iPhone hoặc iPad của bạn."
+    />
+    <title>Cathay Meeting | Cài đặt</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --evergreen: #004b2c;
+        --evergreen-soft: #006a3d;
+        --paper: #f2f7ed;
+        --paper-deep: #d9ead2;
+        --ink: #10251a;
+        --muted: #4c6555;
+        --lime: #9ed136;
+        --line: rgba(0, 75, 44, 0.17);
+        font-family: "Be Vietnam Pro", "PingFang TC", "Noto Sans TC", sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        min-width: 320px;
+        min-height: 100svh;
+        margin: 0;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at 83% 8%, rgba(158, 209, 54, 0.27), transparent 21rem),
+          linear-gradient(116deg, rgba(0, 75, 44, 0.05) 1px, transparent 1px),
+          linear-gradient(26deg, rgba(0, 75, 44, 0.04) 1px, transparent 1px),
+          var(--paper);
+        background-size: auto, 36px 36px, 36px 36px, auto;
+      }
+
+      .page {
+        width: min(100%, 68rem);
+        min-height: 100svh;
+        margin: 0 auto;
+        padding: clamp(1.25rem, 4vw, 3rem);
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        gap: 2rem;
+      }
+
+      .topbar,
+      .footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+      }
+
+      .brand {
+        display: inline-grid;
+        grid-template-columns: 2.1rem auto;
+        grid-template-rows: repeat(2, min-content);
+        align-items: center;
+        column-gap: 0.7rem;
+        row-gap: 0.08rem;
+        color: var(--evergreen);
+        font-size: 0.875rem;
+        font-weight: 750;
+        letter-spacing: 0.08em;
+        line-height: 1.15;
+        text-transform: uppercase;
+      }
+
+      .brand-mark {
+        grid-row: 1 / -1;
+        align-self: center;
+        width: 2.1rem;
+        height: 2.1rem;
+        border-radius: 0.6rem;
+        object-fit: cover;
+      }
+
+      .language-picker {
+        display: inline-flex;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.48);
+      }
+
+      .language-picker button {
+        min-width: 3.3rem;
+        border: 0;
+        padding: 0.5rem 0.65rem;
+        color: var(--evergreen);
+        background: transparent;
+        cursor: pointer;
+        font: inherit;
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+      }
+
+      .language-picker button[aria-pressed="true"] {
+        color: var(--paper);
+        background: var(--evergreen);
+      }
+
+      button:focus-visible,
+      a:focus-visible {
+        outline: 3px solid var(--lime);
+        outline-offset: 3px;
+      }
+
+      .content {
+        display: grid;
+        align-items: center;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: clamp(2rem, 6vw, 7rem);
+        padding: clamp(1rem, 5vw, 4rem) 0;
+      }
+
+      .eyebrow {
+        margin: 0 0 1.1rem;
+        color: var(--evergreen-soft);
+        font-size: 0.75rem;
+        font-weight: 800;
+        letter-spacing: 0.16em;
+      }
+
+      .description {
+        max-width: 34rem;
+        margin: 0;
+        color: var(--muted);
+        font-size: clamp(1rem, 1.8vw, 1.15rem);
+        line-height: 1.65;
+      }
+
+      .install-card {
+        position: relative;
+        overflow: hidden;
+        padding: clamp(1.5rem, 4vw, 2.5rem);
+        color: var(--paper);
+        background: var(--evergreen);
+        box-shadow: 12px 14px 0 var(--paper-deep), 13px 15px 0 var(--evergreen-soft);
+      }
+
+      .install-card::before {
+        position: absolute;
+        right: -3.5rem;
+        bottom: -5.25rem;
+        width: 13rem;
+        height: 13rem;
+        border: 1px solid rgba(246, 242, 233, 0.42);
+        border-radius: 50%;
+        content: "";
+      }
+
+      .install-card::after {
+        position: absolute;
+        right: 1.1rem;
+        bottom: 1.1rem;
+        width: 7rem;
+        height: 7rem;
+        border: 1px solid rgba(246, 242, 233, 0.25);
+        border-radius: 50%;
+        content: "";
+      }
+
+      .card-label,
+      .app-preview,
+      .platform-note,
+      .certificate-note {
+        position: relative;
+        z-index: 1;
+      }
+
+      .card-label {
+        margin: 0;
+        color: #b9d7c5;
+        font-size: 0.74rem;
+        font-weight: 750;
+        letter-spacing: 0.12em;
+      }
+
+      .card-header {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-bottom: 2.15rem;
+      }
+
+      .app-preview {
+        width: 4.25rem;
+        height: 4.25rem;
+        flex: 0 0 auto;
+        overflow: hidden;
+        border: 1px solid rgba(242, 247, 237, 0.38);
+        border-radius: 1.1rem;
+        box-shadow: 0 0.6rem 1.4rem rgba(0, 30, 17, 0.28);
+      }
+
+      .app-preview img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .install-button {
+        position: relative;
+        z-index: 1;
+        display: inline-flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        min-height: 4.25rem;
+        padding: 0.85rem 0.95rem 0.85rem 1.25rem;
+        color: var(--evergreen);
+        background: var(--paper);
+        font-size: 1rem;
+        font-weight: 750;
+        text-decoration: none;
+        transition: transform 160ms ease, background-color 160ms ease;
+      }
+
+      .install-button:hover {
+        background: #fffdf8;
+        transform: translateY(-2px);
+      }
+
+      .arrow {
+        display: grid;
+        width: 2.35rem;
+        height: 2.35rem;
+        place-items: center;
+        border-radius: 50%;
+        color: var(--paper);
+        background: var(--evergreen-soft);
+        font-size: 1.3rem;
+        line-height: 1;
+      }
+
+      .platform-note {
+        margin: 1.35rem 0 0;
+        color: #d8e4db;
+        font-size: 0.88rem;
+        line-height: 1.55;
+      }
+
+      .certificate-note {
+        margin: 0.85rem 0 0;
+        color: #b9d7c5;
+        font-size: 0.78rem;
+        line-height: 1.55;
+      }
+
+      .footer {
+        padding-top: 1.2rem;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 0.75rem;
+      }
+
+      .footer span:last-child {
+        color: var(--evergreen);
+        font-weight: 700;
+      }
+
+      @media (max-width: 44rem) {
+        .content {
+          grid-template-columns: 1fr;
+          gap: 2rem;
+        }
+      }
+
+      @media (max-width: 31rem) {
+        .topbar {
+          align-items: stretch;
+          flex-direction: column;
+          gap: 0.75rem;
+        }
+
+        .language-picker {
+          align-self: flex-end;
+          width: auto;
+        }
+
+        .language-picker button {
+          min-width: 2.85rem;
+          min-height: 2.5rem;
+        }
+      }
+
+      @media (max-width: 25rem) {
+        .page {
+          gap: 1.5rem;
+          padding: 1rem;
+        }
+
+        .content {
+          gap: 1.75rem;
+          padding: 0.25rem 0;
+        }
+
+        .install-card {
+          padding: 1.25rem;
+          box-shadow: 8px 9px 0 var(--paper-deep), 9px 10px 0 var(--evergreen-soft);
+        }
+
+        .card-header {
+          margin-bottom: 1.5rem;
+        }
+
+        .app-preview {
+          width: 3.75rem;
+          height: 3.75rem;
+        }
+
+        .install-button {
+          min-height: 3.75rem;
+        }
+      }
+
+      @media (max-width: 21rem) {
+        .brand {
+          font-size: 0.72rem;
+          letter-spacing: 0.06em;
+        }
+
+        .install-card {
+          padding: 1rem;
+        }
+
+        .card-header {
+          margin-bottom: 1.25rem;
+        }
+
+        .app-preview {
+          width: 3.25rem;
+          height: 3.25rem;
+        }
+
+        .install-button {
+          padding-right: 0.7rem;
+          padding-left: 1rem;
+          font-size: 0.9rem;
+        }
+
+        .arrow {
+          width: 2.2rem;
+          height: 2.2rem;
+        }
+
+        .footer {
+          align-items: flex-start;
+          flex-direction: column;
+          gap: 0.5rem;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          scroll-behavior: auto !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <header class="topbar">
+        <div class="brand" aria-label="Cathay Meeting">
+          <img class="brand-mark" src="images/app-icon.png" alt="" width="34" height="34" />
+          <span>Cathay Insurance Vietnam</span>
+          <span>Cathay Meeting</span>
+        </div>
+        <div class="language-picker" role="group" aria-label="Language selection">
+          <button type="button" data-language="vi" aria-pressed="true">VI</button>
+          <button type="button" data-language="en" aria-pressed="false">EN</button>
+          <button type="button" data-language="zh-TW" aria-pressed="false">繁中</button>
+        </div>
+      </header>
+
+      <section class="content" aria-label="Cathay Meeting">
+        <div>
+          <p class="eyebrow" id="eyebrow">ỨNG DỤNG NỘI BỘ</p>
+          <p class="description" id="description">
+            Cài Cathay Meeting để truy cập nhanh thông tin và tài liệu cuộc họp của bạn.
+          </p>
+        </div>
+
+        <aside class="install-card" aria-labelledby="install-label">
+          <div class="card-header">
+            <p class="card-label" id="install-label">SẴN SÀNG CÀI ĐẶT</p>
+            <div class="app-preview">
+              <img src="images/app-icon.png" alt="" width="68" height="68" />
+            </div>
+          </div>
+          <a
+            class="install-button"
+            href="itms-services://?action=download-manifest&amp;url=https%3A%2F%2Fraw.githubusercontent.com%2Fcathay-ins%2Fcathay-meeting-app-deploy%2Fmain%2Fvn.com.cathayins.cathaymeeting"
+            id="install-button"
+            aria-describedby="platform-note certificate-note"
+          >
+            <span id="install-button-text">Cài Cathay Meeting</span>
+            <span class="arrow" aria-hidden="true">→</span>
+          </a>
+          <p class="platform-note" id="platform-note">Chỉ hỗ trợ iPhone và iPad.</p>
+          <p class="certificate-note" id="certificate-note">
+            Nếu iOS yêu cầu, hãy tin cậy nhà phát triển hoặc chứng chỉ của ứng dụng sau khi cài đặt.
+          </p>
+        </aside>
+      </section>
+
+      <footer class="footer">
+        <span id="footer-copy">Dành cho nhân viên Cathay</span>
+        <span>iOS</span>
+      </footer>
+    </main>
+
+    <script>
+      (() => {
+        const languageStorageKey = "cathay-meeting-install-language";
+        const manifestUrl =
+          "https://raw.githubusercontent.com/cathay-ins/cathay-meeting-app-deploy/main/vn.com.cathayins.cathaymeeting";
+        const installUrl = `itms-services://?action=download-manifest&url=${encodeURIComponent(manifestUrl)}`;
+
+        const translations = {
+          vi: {
+            htmlLanguage: "vi",
+            title: "Cathay Meeting | Cài đặt",
+            description: "Cài đặt Cathay Meeting trên iPhone hoặc iPad của bạn.",
+            languageLabel: "Chọn ngôn ngữ",
+            eyebrow: "ỨNG DỤNG NỘI BỘ",
+            body: "Cài Cathay Meeting để truy cập nhanh thông tin và tài liệu cuộc họp của bạn.",
+            installLabel: "SẴN SÀNG CÀI ĐẶT",
+            installButton: "Cài Cathay Meeting",
+            platformNote: "Chỉ hỗ trợ iPhone và iPad.",
+            certificateNote:
+              "Nếu iOS yêu cầu, hãy tin cậy nhà phát triển hoặc chứng chỉ của ứng dụng sau khi cài đặt.",
+            footer: "Dành cho nhân viên Cathay",
+          },
+          en: {
+            htmlLanguage: "en",
+            title: "Cathay Meeting | Install",
+            description: "Install Cathay Meeting on your iPhone or iPad.",
+            languageLabel: "Choose language",
+            eyebrow: "INTERNAL APP",
+            body: "Install Cathay Meeting for quick access to your meeting information and documents.",
+            installLabel: "READY TO INSTALL",
+            installButton: "Install Cathay Meeting",
+            platformNote: "Available on iPhone and iPad only.",
+            certificateNote:
+              "If iOS asks, trust the app developer or certificate after installation.",
+            footer: "For Cathay employees",
+          },
+          "zh-TW": {
+            htmlLanguage: "zh-Hant-TW",
+            title: "Cathay Meeting | 安裝",
+            description: "在您的 iPhone 或 iPad 上安裝 Cathay Meeting。",
+            languageLabel: "選擇語言",
+            eyebrow: "內部應用程式",
+            body: "安裝 Cathay Meeting，快速存取您的會議資訊與文件。",
+            installLabel: "準備安裝",
+            installButton: "安裝 Cathay Meeting",
+            platformNote: "僅支援 iPhone 和 iPad。",
+            certificateNote: "若 iOS 要求，安裝後請信任應用程式開發者或憑證。",
+            footer: "供國泰員工使用",
+          },
+        };
+
+        const supportedLanguage = (value) => {
+          const language = value.toLowerCase().replace("_", "-");
+
+          if (language === "zh-tw" || language.startsWith("zh-hant")) return "zh-TW";
+          if (language.startsWith("en")) return "en";
+          if (language.startsWith("vi")) return "vi";
+
+          return null;
+        };
+
+        const savedLanguage = () => {
+          try {
+            return supportedLanguage(localStorage.getItem(languageStorageKey) || "");
+          } catch {
+            return null;
+          }
+        };
+
+        const browserLanguage = () =>
+          [...navigator.languages, navigator.language]
+            .map(supportedLanguage)
+            .find(Boolean) || "vi";
+
+        const setText = (id, value) => {
+          document.getElementById(id).textContent = value;
+        };
+
+        const applyLanguage = (language, savePreference) => {
+          const copy = translations[language];
+          document.documentElement.lang = copy.htmlLanguage;
+          document.title = copy.title;
+          document.querySelector('meta[name="description"]').content = copy.description;
+          document.querySelector(".language-picker").setAttribute("aria-label", copy.languageLabel);
+
+          setText("eyebrow", copy.eyebrow);
+          setText("description", copy.body);
+          setText("install-label", copy.installLabel);
+          setText("install-button-text", copy.installButton);
+          setText("platform-note", copy.platformNote);
+          setText("certificate-note", copy.certificateNote);
+          setText("footer-copy", copy.footer);
+
+          document.querySelectorAll("[data-language]").forEach((button) => {
+            button.setAttribute("aria-pressed", String(button.dataset.language === language));
+          });
+
+          if (savePreference) {
+            try {
+              localStorage.setItem(languageStorageKey, language);
+            } catch {
+              // Private browsing can disallow local storage; the page remains usable.
+            }
+          }
+        };
+
+        document.getElementById("install-button").href = installUrl;
+        document.querySelectorAll("[data-language]").forEach((button) => {
+          button.addEventListener("click", () => applyLanguage(button.dataset.language, true));
+        });
+
+        applyLanguage(savedLanguage() || browserLanguage(), false);
+      })();
+    </script>
+  </body>
+</html>
