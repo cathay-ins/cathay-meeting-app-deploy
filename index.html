@@ -2,7 +2,7 @@
 <html lang="vi">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#004b2c" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <link rel="icon" href="images/app-icon.png" />
@@ -36,6 +36,10 @@
         box-sizing: border-box;
       }
 
+      html {
+        background: var(--paper);
+      }
+
       body {
         min-width: 320px;
         min-height: 100svh;
@@ -53,7 +57,11 @@
         width: min(100%, 68rem);
         min-height: 100svh;
         margin: 0 auto;
-        padding: clamp(1.25rem, 4vw, 3rem);
+        padding:
+          calc(clamp(1.25rem, 4vw, 3rem) + env(safe-area-inset-top))
+          calc(clamp(1.25rem, 4vw, 3rem) + env(safe-area-inset-right))
+          calc(clamp(1.25rem, 4vw, 3rem) + env(safe-area-inset-bottom))
+          calc(clamp(1.25rem, 4vw, 3rem) + env(safe-area-inset-left));
         display: grid;
         grid-template-rows: auto 1fr auto;
         gap: 2rem;
@@ -309,7 +317,11 @@
       @media (max-width: 25rem) {
         .page {
           gap: 1.5rem;
-          padding: 1rem;
+          padding:
+            calc(1rem + env(safe-area-inset-top))
+            calc(1rem + env(safe-area-inset-right))
+            calc(1rem + env(safe-area-inset-bottom))
+            calc(1rem + env(safe-area-inset-left));
         }
 
         .content {
