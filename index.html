@@ -15,7 +15,7 @@
     />
     <meta
       name="description"
-      content="Cài đặt Cathay Meeting trên iPhone hoặc iPad của bạn."
+      content="Tải Cathay Meeting cho iPhone, iPad hoặc Android."
     />
     <title>Cathay Meeting | Cài đặt</title>
     <style>
@@ -188,6 +188,7 @@
 
       .card-label,
       .app-preview,
+      .download-options,
       .platform-note,
       .certificate-note {
         position: relative;
@@ -229,7 +230,28 @@
         object-fit: cover;
       }
 
-      .install-button {
+      .download-options {
+        display: grid;
+        gap: 0.75rem;
+      }
+
+      .platform-option[hidden] {
+        display: none;
+      }
+
+      .platform-picker-header[hidden] {
+        display: none;
+      }
+
+      .button-content {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.65rem;
+        min-width: 0;
+      }
+
+      .install-button,
+      .android-download-button {
         position: relative;
         z-index: 1;
         display: inline-flex;
@@ -249,6 +271,22 @@
       .install-button:hover {
         background: #fffdf8;
         transform: translateY(-2px);
+      }
+
+      .android-download-button {
+        color: var(--paper);
+        border: 1px solid rgba(242, 247, 237, 0.5);
+        background: rgba(0, 75, 44, 0.22);
+      }
+
+      .android-download-button:hover {
+        background: rgba(242, 247, 237, 0.12);
+        transform: translateY(-2px);
+      }
+
+      .android-download-button .arrow {
+        color: var(--evergreen);
+        background: var(--lime);
       }
 
       .arrow {
@@ -343,7 +381,8 @@
           height: 3.75rem;
         }
 
-        .install-button {
+        .install-button,
+        .android-download-button {
           min-height: 3.75rem;
         }
       }
@@ -367,7 +406,8 @@
           height: 3.25rem;
         }
 
-        .install-button {
+        .install-button,
+        .android-download-button {
           padding-right: 0.7rem;
           padding-left: 1rem;
           font-size: 0.9rem;
@@ -418,32 +458,54 @@
           </p>
         </div>
 
-        <aside class="install-card" aria-labelledby="install-label">
-          <div class="card-header">
-            <p class="card-label" id="install-label">SẴN SÀNG CÀI ĐẶT</p>
+        <aside class="install-card" aria-label="Cathay Meeting">
+          <div class="card-header platform-picker-header" id="platform-picker-header">
+            <p class="card-label" id="install-label">CHỌN NỀN TẢNG</p>
             <div class="app-preview">
               <img src="images/app-icon.png" alt="" width="68" height="68" />
             </div>
           </div>
-          <a
-            class="install-button"
-            href="itms-services://?action=download-manifest&amp;url=https%3A%2F%2Fraw.githubusercontent.com%2Fcathay-ins%2Fcathay-meeting-app-deploy%2Fmain%2Fvn.com.cathayins.cathaymeeting"
-            id="install-button"
-            aria-describedby="platform-note certificate-note"
-          >
-            <span id="install-button-text">Cài Cathay Meeting</span>
-            <span class="arrow" aria-hidden="true">→</span>
-          </a>
-          <p class="platform-note" id="platform-note">Chỉ hỗ trợ iPhone và iPad.</p>
-          <p class="certificate-note" id="certificate-note">
-            Nếu iOS yêu cầu, hãy tin cậy nhà phát triển hoặc chứng chỉ của ứng dụng sau khi cài đặt.
+          <div class="download-options">
+            <a
+              href="itms-services://?action=download-manifest&amp;url=https%3A%2F%2Fraw.githubusercontent.com%2Fcathay-ins%2Fcathay-meeting-app-deploy%2Fmain%2Fvn.com.cathayins.cathaymeeting"
+              class="install-button platform-option"
+              id="ios-install-button"
+              data-platform-option="ios"
+              aria-label="Cài Cathay Meeting trên iPhone hoặc iPad"
+              aria-describedby="ios-note"
+            >
+              <span class="button-content">
+                <span id="ios-install-button-text">Cài trên iPhone/iPad</span>
+              </span>
+              <span class="arrow" aria-hidden="true">→</span>
+            </a>
+            <a
+              class="android-download-button platform-option"
+              href="https://github.com/cathay-ins/cathay-meeting-app-deploy/releases/download/v2.0/CathayMeeting-v2.0.apk"
+              download="CathayMeeting-v2.0.apk"
+              id="android-download-button"
+              data-platform-option="android"
+              aria-label="Tải APK Cathay Meeting cho Android"
+              aria-describedby="android-note"
+            >
+              <span class="button-content">
+                <span id="android-download-button-text">Tải APK Android</span>
+              </span>
+              <span class="arrow" aria-hidden="true">↓</span>
+            </a>
+          </div>
+          <p class="platform-note platform-option" id="ios-note" data-platform-option="ios">
+            iPhone/iPad: nếu iOS yêu cầu, hãy tin cậy nhà phát triển hoặc chứng chỉ của ứng dụng.
+          </p>
+          <p class="certificate-note platform-option" id="android-note" data-platform-option="android">
+            Android: sau khi tải, thiết bị có thể yêu cầu cho phép cài đặt từ nguồn này.
           </p>
         </aside>
       </section>
 
       <footer class="footer">
         <span id="footer-copy">Dành cho nhân viên Cathay</span>
-        <span>iOS</span>
+        <span id="platform-footer">iOS · Android</span>
       </footer>
     </main>
 
@@ -454,47 +516,98 @@
           "https://raw.githubusercontent.com/cathay-ins/cathay-meeting-app-deploy/main/vn.com.cathayins.cathaymeeting";
         const installUrl = `itms-services://?action=download-manifest&url=${encodeURIComponent(manifestUrl)}`;
 
+        const detectPlatform = ({
+          userAgent = navigator.userAgent,
+          platform = navigator.platform,
+          maxTouchPoints = navigator.maxTouchPoints,
+        } = {}) => {
+          if (
+            !userAgent ||
+            /bot|crawler|spider|crawling|slurp|preview|prerender|facebookexternalhit|whatsapp/i.test(
+              userAgent,
+            )
+          ) {
+            return "unknown";
+          }
+
+          if (/android/i.test(userAgent)) return "android";
+
+          if (
+            /iPad|iPhone|iPod/i.test(userAgent) ||
+            (platform === "MacIntel" && maxTouchPoints > 1)
+          ) {
+            return "ios";
+          }
+
+          return "unknown";
+        };
+
+        const applyPlatform = (platform) => {
+          document.documentElement.dataset.platform = platform;
+          const platformPickerHeader = document.getElementById("platform-picker-header");
+          const isFallback = platform === "unknown";
+
+          platformPickerHeader.hidden = !isFallback;
+          platformPickerHeader.setAttribute("aria-hidden", String(!isFallback));
+
+          document.querySelectorAll("[data-platform-option]").forEach((option) => {
+            const isVisible = isFallback || option.dataset.platformOption === platform;
+            option.hidden = !isVisible;
+            option.setAttribute("aria-hidden", String(!isVisible));
+          });
+        };
+
         const translations = {
           vi: {
             htmlLanguage: "vi",
-            title: "Cathay Meeting | Cài đặt",
-            description: "Cài đặt Cathay Meeting trên iPhone hoặc iPad của bạn.",
+            title: "Cathay Meeting | Tải ứng dụng",
+            description: "Tải Cathay Meeting cho iPhone, iPad hoặc Android.",
             languageLabel: "Chọn ngôn ngữ",
             eyebrow: "ỨNG DỤNG NỘI BỘ",
-            body: "Cài Cathay Meeting để truy cập nhanh thông tin và tài liệu cuộc họp của bạn.",
-            installLabel: "SẴN SÀNG CÀI ĐẶT",
-            installButton: "Cài Cathay Meeting",
-            platformNote: "Chỉ hỗ trợ iPhone và iPad.",
-            certificateNote:
-              "Nếu iOS yêu cầu, hãy tin cậy nhà phát triển hoặc chứng chỉ của ứng dụng sau khi cài đặt.",
+            body: "Chọn nền tảng để tải Cathay Meeting và truy cập nhanh thông tin, tài liệu cuộc họp.",
+            installLabel: "CHỌN NỀN TẢNG",
+            iosInstallButton: "Cài trên iPhone/iPad",
+            androidDownloadButton: "Tải APK Android",
+            iosAriaLabel: "Cài Cathay Meeting trên iPhone hoặc iPad",
+            androidAriaLabel: "Tải APK Cathay Meeting cho Android",
+            iosNote: "iPhone/iPad: nếu iOS yêu cầu, hãy tin cậy nhà phát triển hoặc chứng chỉ của ứng dụng.",
+            androidNote: "Android: sau khi tải, thiết bị có thể yêu cầu cho phép cài đặt từ nguồn này.",
             footer: "Dành cho nhân viên Cathay",
+            platforms: "iOS · Android",
           },
           en: {
             htmlLanguage: "en",
-            title: "Cathay Meeting | Install",
-            description: "Install Cathay Meeting on your iPhone or iPad.",
+            title: "Cathay Meeting | Download",
+            description: "Download Cathay Meeting for iPhone, iPad, or Android.",
             languageLabel: "Choose language",
             eyebrow: "INTERNAL APP",
-            body: "Install Cathay Meeting for quick access to your meeting information and documents.",
-            installLabel: "READY TO INSTALL",
-            installButton: "Install Cathay Meeting",
-            platformNote: "Available on iPhone and iPad only.",
-            certificateNote:
-              "If iOS asks, trust the app developer or certificate after installation.",
+            body: "Choose a platform to download Cathay Meeting and quickly access meeting information and documents.",
+            installLabel: "CHOOSE A PLATFORM",
+            iosInstallButton: "Install on iPhone/iPad",
+            androidDownloadButton: "Download Android APK",
+            iosAriaLabel: "Install Cathay Meeting on iPhone or iPad",
+            androidAriaLabel: "Download the Cathay Meeting APK for Android",
+            iosNote: "iPhone/iPad: if iOS asks, trust the app developer or certificate.",
+            androidNote: "Android: after downloading, your device may ask you to allow installs from this source.",
             footer: "For Cathay employees",
+            platforms: "iOS · Android",
           },
           "zh-TW": {
             htmlLanguage: "zh-Hant-TW",
-            title: "Cathay Meeting | 安裝",
-            description: "在您的 iPhone 或 iPad 上安裝 Cathay Meeting。",
+            title: "Cathay Meeting | 下載",
+            description: "在 iPhone、iPad 或 Android 上下載 Cathay Meeting。",
             languageLabel: "選擇語言",
             eyebrow: "內部應用程式",
-            body: "安裝 Cathay Meeting，快速存取您的會議資訊與文件。",
-            installLabel: "準備安裝",
-            installButton: "安裝 Cathay Meeting",
-            platformNote: "僅支援 iPhone 和 iPad。",
-            certificateNote: "若 iOS 要求，安裝後請信任應用程式開發者或憑證。",
+            body: "選擇平台下載 Cathay Meeting，快速存取會議資訊與文件。",
+            installLabel: "選擇平台",
+            iosInstallButton: "在 iPhone/iPad 上安裝",
+            androidDownloadButton: "下載 Android APK",
+            iosAriaLabel: "在 iPhone 或 iPad 上安裝 Cathay Meeting",
+            androidAriaLabel: "下載 Android 版 Cathay Meeting APK",
+            iosNote: "iPhone/iPad：若 iOS 要求，請信任應用程式開發者或憑證。",
+            androidNote: "Android：下載後，裝置可能要求允許從這個來源安裝。",
             footer: "供國泰員工使用",
+            platforms: "iOS · Android",
           },
         };
 
@@ -535,10 +648,14 @@
           setText("eyebrow", copy.eyebrow);
           setText("description", copy.body);
           setText("install-label", copy.installLabel);
-          setText("install-button-text", copy.installButton);
-          setText("platform-note", copy.platformNote);
-          setText("certificate-note", copy.certificateNote);
+          setText("ios-install-button-text", copy.iosInstallButton);
+          setText("android-download-button-text", copy.androidDownloadButton);
+          setText("ios-note", copy.iosNote);
+          setText("android-note", copy.androidNote);
           setText("footer-copy", copy.footer);
+          setText("platform-footer", copy.platforms);
+          document.getElementById("ios-install-button").setAttribute("aria-label", copy.iosAriaLabel);
+          document.getElementById("android-download-button").setAttribute("aria-label", copy.androidAriaLabel);
 
           document.querySelectorAll("[data-language]").forEach((button) => {
             button.setAttribute("aria-pressed", String(button.dataset.language === language));
@@ -553,11 +670,12 @@
           }
         };
 
-        document.getElementById("install-button").href = installUrl;
+        document.getElementById("ios-install-button").href = installUrl;
         document.querySelectorAll("[data-language]").forEach((button) => {
           button.addEventListener("click", () => applyLanguage(button.dataset.language, true));
         });
 
+        applyPlatform(detectPlatform());
         applyLanguage(savedLanguage() || browserLanguage(), false);
       })();
     </script>
